@@ -4,3 +4,6 @@
   with_items:
     - nfs-common
     - nfs-kernel-server
+
+- name: Set correct nfs daemon name
+  set_fact: nfs_server_daemon="nfs-kernel-server"

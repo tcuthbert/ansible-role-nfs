@@ -1,7 +1,5 @@
 ---
 # Include variables and define needed variables.
-- name: Include OS-specific variables.
-  include_vars: "{{ ansible_os_family }}.yml"
 
 # Setup/install tasks.
 - include: setup-RedHat.yml
@@ -10,14 +8,11 @@
 - include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
-- name: Copy exports file.
-  template:
-    src: exports.j2
-    dest: /etc/exports
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart nfs
+- include: nfs-server.yml
+  when: '"server" in mode'
+
+- include: nfs-client.yml
+  when: '"client" in mode'
 
 - name: Ensure nfs is running.
   service: "name={{ nfs_server_daemon }} state=started enabled=yes"

@@ -1,0 +1,18 @@
+---
+
+- name: Ensure {{nfsmount}} directory exists
+  file: path={{nfsmount}} state=directory
+  tags: 
+  - nfs
+
+- name: Configure /etc/fstab on clients
+  mount: name={{nfsmount}} src={{nfsserver}}:{{nfspath}} fstype=nfs state=mounted
+  when: nfssrcaddr is undefined
+  tags:
+  - nfs
+
+- name: Configure /etc/fstab on clients
+  mount: name={{nfsmount}} src={{nfsserver}}:{{nfspath}} fstype=nfs opts="clientaddr={{ nfssrcaddr }}" state=mounted
+  when: nfssrcaddr is defined
+  tags:
+  - nfs

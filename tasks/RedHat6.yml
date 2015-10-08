@@ -1,0 +1,4 @@
+---
+- name: Set correct nfs daemon name
+  set_fact: nfs_server_daemon="nfs"
+  when: ansible_distribution_major_version == "6"
